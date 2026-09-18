@@ -10,7 +10,7 @@ export const criarUsuarioController = async(req, res) =>{
         }
         const senhaHash = await bcrypt.hash(senha, 10);
         const resultado = await criarUsuarioService(nome, email, senhaHash);
-        res.status(201).json({messagem: "usuario criado com sucesso."})
+        res.status(201).json({message: "usuario criado com sucesso."})
 
     } catch(err){
         res.status(400).json({message:`erro: ${err}`})
