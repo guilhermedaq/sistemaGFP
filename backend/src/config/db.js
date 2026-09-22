@@ -1,7 +1,7 @@
 import pkg from "pg";
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config()
 
 const { Pool } = pkg;
 
@@ -10,7 +10,7 @@ const pool = new Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     password: String(process.env.DB_PASSWORD),
-    port: parseInt(process.env.DB_PORT)
+    port: Number(process.env.DB_PORT) || 5432
 });
 
 export default pool;

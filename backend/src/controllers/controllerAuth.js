@@ -8,6 +8,9 @@ export const criarUsuarioController = async(req, res) =>{
         if(await buscarUsuario(email)){
             return res.status(400).json({message: "E-mail já existente"})
         }
+        if(!email || !senha){
+            return res.status(400).json({message: "Faltam dados"})
+        }
         const senhaHash = await bcrypt.hash(senha, 10);
         const resultado = await criarUsuarioService(nome, email, senhaHash);
         res.status(201).json({message: "usuario criado com sucesso."})
@@ -25,14 +28,14 @@ export const loginUsuarioController = async(req, res)=>{
             return res.status(400).json({message:'E-mail ou senha inválidos'})
         };
 
-        const senhaCheck = await bcrypt.compare(senha, usuario.senhaHash);
+        const senhaCheck = await bcrypt.compare(senha, usuario.senhahash);
         if(!senhaCheck){
             return res.status(400).json({message: 'E-mail ou senha inválidos'})
         }   
 
         // configurar o JWT
         const token = jwt.sign(
-            { id: usuario.id, email: usuario.email }, 
+            { id: usuario.usuarioid, email: usuario.email }, 
             process.env.JWT, 
             { expiresIn: '1h' });
 

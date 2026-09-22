@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 
 export const autenticarToken = (req, res, next)=>{
-    const authHeader = req.headers;
+    const authHeader = req.headers['authorization'];
 
     const token = authHeader && authHeader.split(' ')[1];
 
