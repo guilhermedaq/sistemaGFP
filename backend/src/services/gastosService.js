@@ -15,4 +15,4 @@ export const gastosService = async (ano_mes)=>{
 `, [ano_mes]);
 
     return resultado.rows[0]
-}
+};
