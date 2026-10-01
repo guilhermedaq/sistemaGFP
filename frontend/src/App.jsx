@@ -1,9 +1,10 @@
 import './App.css';
+import { ResumoFinanceiro } from './components/Resumo_financeiro.jsx';
 
 function App() {
   return (
     <>
-      <h1 className=''>Olá mundo</h1>
+      <ResumoFinanceiro></ResumoFinanceiro>
     </>
   )
 }
