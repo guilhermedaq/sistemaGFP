@@ -35,10 +35,16 @@ export function ResumoFinanceiro(){
          id="mes"
          value={mes}
          onChange={month_change_handle}
-
-
         />
-        {/* Aqui vai a exibição do resumo */}
+        <div className="border-2 flex flex-row gap-3">
+            <div className="">
+                <h1>Gastos</h1>
+            </div>
+            
+            <div>
+                <h1>Despesas</h1>
+            </div>
+        </div>
         </div>
     );
 }
