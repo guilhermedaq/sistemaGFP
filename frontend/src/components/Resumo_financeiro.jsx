@@ -48,7 +48,25 @@ export function ResumoFinanceiro(){
             }
         }
         chamarCategorias()
-    }, [])
+    }, []);
+
+    useEffect(() => {
+    async function carregarDadosDoMes() {
+        try {
+        const res = await fetch(`http://localhost:3000/orcamento?mes=${mes}`);
+        const dados = await res.json();
+        
+        // Se tiver dados no banco para esse mês, preenche. Se não, zera os inputs ({})!
+        setValores(dados || {});
+        } catch (err) {
+        console.error('Erro ao carregar mês:', err);
+        }
+    }
+
+    if (mes) {
+        carregarDadosDoMes();
+    }
+    }, [mes]); // Dispara sozinho ao trocar de mês no <input type="month">
     
     // Função auxiliar para formatar moeda em pt-BR
     const formatarMoeda = (valor) =>
@@ -56,6 +74,28 @@ export function ResumoFinanceiro(){
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     }).format(valor || 0);
+
+        const salvarMes = async () => {
+        try {
+        const resposta = await fetch('http://localhost:3000/orcamento', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+            mes: mes,
+            valores: valores
+            })
+        });
+
+        if (resposta.ok) {
+            alert('Planilha do mês salva com sucesso!');
+        } else {
+            alert('Erro ao salvar no servidor.');
+        }
+        } catch (err) {
+        console.error(err);
+        alert('Erro de conexão ao salvar.');
+        }
+    };
 
     // Soma das despesas digitadas nos inputs
     const totalDespesasDigitado = categorias
@@ -174,13 +214,22 @@ export function ResumoFinanceiro(){
 
     </div>
 
-
-        <input
-         type="month"
-         id="mes"
-         value={mes}
-         onChange={month_change_handle}
-        />
+        <div className="flex items-center space-x-3">
+            <input
+                type="month"
+                id="mes"
+                value={mes}
+                onChange={month_change_handle}
+                className="border rounded px-3 py-1.5 cursor-pointer"
+            />
+            
+            <button
+                onClick={salvarMes}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded cursor-pointer"
+            >
+                Salvar Mês
+            </button>
+        </div>
 
         </div>
     );
